@@ -7,3 +7,5 @@ beautifulsoup4
 flask
 python-dotenv
 joblib
+langdetect
+pytest

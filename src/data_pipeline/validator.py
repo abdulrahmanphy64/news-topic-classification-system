@@ -22,19 +22,7 @@ MIN_TEXT_LENGTH = 200
 MAX_JUNK_RATIO = 0.4
 MIN_UNIQUE_RATIO = 0.2
 
-def validate_record(record: dict, mode: str) -> dict:
-    if mode.lower() != "training":
-        return {
-            "is_valid": False,
-            "reason" : REASON_INVALID_MODE
-        }
-    
-    if mode.lower() != "inference":
-        return {
-            "is_valid": False,
-            "reason" : REASON_INVALID_MODE
-        }
-    
+def validate_record(record: dict, mode: str) -> dict:   
     ok, reason = _check_text_exists(record)
     if not ok:
         return {
@@ -51,6 +39,13 @@ def validate_record(record: dict, mode: str) -> dict:
             "reason" : reason
         }
     
+    ok , reason = _check_language(text)
+    if not ok:
+        return {
+            "is_valid": False,
+            "reason": reason
+        }
+    
     ok, reason = _check_junk_ratio(text)
     if not ok:
         return {
@@ -58,12 +53,6 @@ def validate_record(record: dict, mode: str) -> dict:
             "reason" : reason
         }
     
-    ok , reason = _check_language(text)
-    if not ok:
-        return {
-            "is_valid": False,
-            "reason": reason
-        }
     
     ok, reason = _check_unique_word_ratio(text)
     if not ok:
